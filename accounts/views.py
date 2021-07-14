@@ -3,6 +3,7 @@ from accounts.models import Product
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import OrderForm
+from .filters import OrderFilter
 
 # Create your views here.
 
@@ -37,15 +38,20 @@ def customer(request,id_customer):
     customerOrders = customer.order_set.all()
     totalOrders = customerOrders.count()
 
+    orderFilter = OrderFilter(request.GET, queryset= customerOrders)
+    customerOrders = orderFilter.qs
+
     context = {'customer': customer,
                 'totalOrders': totalOrders,
                 'customerOrders': customerOrders,
+                'orderFilter': orderFilter,
               }
     return render(request, 'accounts/customer.html', context)
 
 
-def createOrder(request):
-    form = OrderForm()
+def createOrder(request, id_customer):
+    customer = Customer.objects.get(id = id_customer)
+    form = OrderForm(initial={'customer': customer})
     context = {'form': form}
 
     if request.method == "POST":

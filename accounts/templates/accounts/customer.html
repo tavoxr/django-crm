@@ -1,4 +1,5 @@
 {% extends 'accounts/main.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Customer
@@ -11,7 +12,7 @@ Customer
 			<h5>Customer: {{customer.name}}</h5>
 			<hr>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="">Update Customer</a>
-			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Customer</a>
+			<a class="btn btn-outline-success  btn-sm btn-block mt-3" href="{% url 'create_order' customer.id %}">Place Order</a>
 
 		</div>
 	</div>
@@ -40,8 +41,27 @@ Customer
 	<div class="col">
 		<div class="card card-body">
 			<form method="get">
+				<div class="row">
+				
+					<div class="col-sm-12 col-md-3 ">
+						{{orderFilter.form.product|as_crispy_field}}
+					</div>
+					
+					<div class="col-sm-12 col-md-3">
+						{{orderFilter.form.start_date|as_crispy_field}}
+					</div>
+					<div class="col-sm-12 col-md-3">
+						{{orderFilter.form.end_date|as_crispy_field}}
+					</div>
+				
+					<div class="col-sm-12 col-md-3 ">
+						{{orderFilter.form.status|as_crispy_field}}
+					</div>
 
-		    <button class="btn btn-primary" type="submit">Search</button>
+
+				</div>
+		    <button class="btn btn-success w-100 mt-3" type="submit">Search</button>
+
 		  </form>
 		</div>
 	</div>
@@ -75,8 +95,8 @@ Customer
                             <td>{{order.product.category}}</td>
                             <td>{{order.date_created}}</td>
                             <td>{{order.status}}</td>
-                            <td><a class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a></td>
-                            <td><a class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
+                            <td><a href="{% url 'edit_order' order.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="{% url 'delete_order'  order.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
                         </tr> 
 
                     {% endfor %}
