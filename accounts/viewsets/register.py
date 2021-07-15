@@ -1,3 +1,4 @@
+from accounts.models.customer import Customer
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from ..forms.CreateUserForm import CreateUserForm
@@ -19,6 +20,9 @@ def registerPage(request):
 
             group = Group.objects.get(name = 'customer')
             user.groups.add(group)
+            Customer.objects.create(
+                user = user,
+                )
 
             messages.success(request, 'Account was created for ' + username)
 
