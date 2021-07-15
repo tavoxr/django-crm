@@ -2,10 +2,14 @@ from django import forms
 from django.shortcuts import render, redirect
 from accounts.models import Customer, Order
 from ..forms import OrderForm
+from django.contrib.auth.decorators import login_required
+from ..decorators import allowed_users
+
 
 
 #=================================================== Create Order ===================================================================
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def createOrder(request, id_customer):
     customer = Customer.objects.get(id = id_customer)
     form = OrderForm(initial={'customer': customer})
@@ -23,7 +27,8 @@ def createOrder(request, id_customer):
 
 
 #=================================================== Edit Order ===================================================================
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def editOrder(request,id_order):
     order = Order.objects.get(id = id_order)
     form = OrderForm(instance= order)
@@ -42,7 +47,8 @@ def editOrder(request,id_order):
 
 
 #=================================================== Delete Order===================================================================
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def deleteOrder(request, id_order):
     order = Order.objects.get(id = id_order)
     context = {'item': order}
