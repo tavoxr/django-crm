@@ -5,3 +5,4 @@ from .order import *
 from .login import *
 from .register import *
 from .userPage import *
+from .profile import *
